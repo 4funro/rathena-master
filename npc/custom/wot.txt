@@ -1,0 +1,144 @@
+-	script	controladorwot	-1,{
+OnClock0900:
+OnClock1500:
+OnClock2100:
+OnClock0000:
+killmonsterall "prt_are_in.gat";
+killmonsterall "job_cru.gat";
+set $clavencedora1, 0;
+set $clavencedora2, 0;
+initnpctimer;
+Announce "A Guerra do Tesouro começa em 5 minutos!",bc_all,0xFFFFFF;
+end;
+
+OnTimer60000:
+Announce "A Guerra do Tesouro começa em 4 minutos!",bc_all,0xFFFFFF;
+end;
+
+OnTimer120000:
+Announce "A Guerra do Tesouro começa em 3 minutos!",bc_all,0xFFFFFF;
+end;
+
+OnTimer180000:
+Announce "A Guerra do Tesouro começa em 2 minutos!",bc_all,0xFFFFFF;
+end;
+
+OnTimer240000:
+Announce "A Guerra do Tesouro começa em 1 minuto!",bc_all,0xFFFFFF;
+end;
+
+OnTimer300000:
+Announce "A Guerra do Tesouro começou! Os baús aparecerão em 15 minutos!",bc_all,0xFFFFFF;
+set $@wotstats, 1;
+gvgon "prt_are_in.gat";
+gvgon "arena_room.gat";
+end;
+
+OnTimer600000:
+Announce "A Guerra do Tesouro está aberta, traga seu clã!",bc_all,0xFFFFFF;
+end;
+
+OnTimer900000:
+Announce "A Guerra do Tesouro está aberta, traga seu clã!",bc_all,0xFFFFFF;
+end;
+
+OnTimer1200000:
+stopnpctimer;
+Announce "Os baús da Guerra do Tesouro apareceram!",bc_all,0xFFFFFF;
+monster	"prt_are_in.gat",22,141,"Tesouro",1337,1,"controladorwot::OnCalvencedor1";
+monster	"prt_are_in.gat",126,88,"Tesouro",1337,1,"controladorwot::OnCalvencedor2";
+end;
+
+OnCalvencedor1:
+set $@wotstats, 0;
+Announce "O clã ["+strcharinfo(2)+"] quebrou um dos baús da Guerra do Tesouro! Os membros podem pegar seus prêmios!",bc_all,0xFFFFFF;
+set $clavencedora1, getcharid(2);
+end;
+
+OnCalvencedor2:
+set $@wotstats, 0;
+Announce "O clã ["+strcharinfo(2)+"] quebrou um dos baús da Guerra do Tesouro! Os membros podem pegar seus prêmios!",bc_all,0xFFFFFF;
+set $clavencedora2, getcharid(2);
+end;
+}
+
+
+prontera,156,357,5	script	#portalwot	45,1,1,{
+if (getcharid(2)==0){
+mes "[Guerra do Tesouro]";
+mes "Você precisa estar em um clã para entrar.";
+close;
+}
+if ($@wotstats==0){
+mes "[Guerra do Tesouro]";
+mes "Desculpe, a Guerra do Tesouro ainda não começou.";
+close;
+}
+set @randwot, Rand(1,3);
+if (@randwot==1) {
+warp "arena_room",87,100;
+close;
+}
+if (@randwot==2) {
+warp "arena_room",99,100;
+close;
+}
+if (@randwot==3) {
+warp "arena_room",112,100;
+close;
+}
+}
+
+arena_room,122,87,0	warp	wot01	1,1,prontera,156,353
+arena_room,99,25,0	warp	wot02	1,1,prt_are_in,97,27
+prt_are_in,97,30,0	warp	wot03	1,1,arena_room,99,28
+prt_are_in,21,126,0	warp	wot04	1,1,prt_are_in,56,14
+prt_are_in,54,14,0	warp	wot05	1,1,prt_are_in,21,128
+prt_are_in,143,14,0	warp	wot06	1,1,prt_are_in,126,76
+prt_are_in,126,74,0	warp	wot07	1,1,prt_are_in,141,14
+
+prontera,147,161,5	script	Guerra do Tesouro	459,{
+set .nome$, "[Guerra do Tesouro]";
+
+mes .nome$;
+mes "Olá bravo guerreiro, procurando por batalha?";
+mes "Você conhece a Guerra do Tesouro, mais conhecida como WoT?";
+next;
+menu "Sim, me leve até lá",-,"Não, poderia me explicar?",EXPLICA,"Não quero falar com você",CANCEL;
+mes .nome$;
+mes "Na verdade só poderei levar você até a entrada da WoT, você aceita?";
+next;
+menu "Sim",-,"Não",CANCEL;
+warp "prontera",156,353;
+Oninit:
+close;
+EXPLICA:
+mes .nome$;
+mes "Quando a WoT começar serão 15 minutos de batalha entre clãs para decidir quais equipes quebrarão os 2 baús que aparecerão no final desse tempo, todos os membros dos clãs vencedores no mapa receberão um prêmio ao sair.";
+close;
+CANCEL:
+close;
+}
+
+
+
+
+prt_are_in	mapflag	nomemo
+prt_are_in	mapflag	nobranch
+prt_are_in	mapflag	nowarpto
+prt_are_in	mapflag	nomemo
+prt_are_in	mapflag	noreturn
+prt_are_in	mapflag	noteleport
+prt_are_in	mapflag	nosave	SavePoint
+prt_are_in	mapflag	pvp_noguild
+prt_are_in	mapflag	novending
+
+arena_room	mapflag	nomemo
+arena_room	mapflag	nobranch
+arena_room	mapflag	nowarpto
+arena_room	mapflag	nomemo
+arena_room	mapflag	noreturn
+arena_room	mapflag	noteleport
+arena_room	mapflag	nosave	SavePoint
+arena_room	mapflag	pvp_noguild
+arena_room	mapflag	novending

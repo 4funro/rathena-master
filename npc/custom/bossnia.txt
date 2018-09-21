@@ -1,0 +1,136 @@
+//----------------------------------------------------------------
+//- .___  ___.  __   __    __       ___       _______  __        -
+//- |   \/   | |  | |  |  |  |     /   \     |   ____||  |       -
+//- |  \  /  | |  | |  |__|  |    /  ^  \    |  |__   |  |       -
+//- |  |\/|  | |  | |   __   |   /  /_\  \   |   __|  |  |       -
+//- |  |  |  | |  | |  |  |  |  /  _____  \  |  |____ |  `----.  -
+//- |__|  |__| |__| |__|  |__| /__/     \__\ |_______||_______|  -
+//-                 www.forum.brathena.org                       -
+//----------------------------------------------------------------
+
+prontera,149,188,5	script	Arena dos Chefes	4_F_SHALOSH,{
+
+//--- Nome do NPC. ----------------------------------------------------------------
+set .n$, "[^cc0000 Arena dos Chefes ^000000]";
+//--- Ponto Menu ------------------------------------------------------------------
+set .p$, "[^cc0000•^000000]";
+//--- Mapa ------------------------------------------------------------------------
+set .mp$,"bossnia_01";
+//--- Coordenada X ----------------------------------------------------------------
+set .@x, "203";
+//--- Coordenada Y ----------------------------------------------------------------
+set .@y, "203";
+//--- Nível Conta VIP -------------------------------------------------------------
+set .@vip, 0;
+//--- Nível Base Necessário para Entrar -------------------------------------------
+set .@b, 160;
+//--- Número Máximo de Pessoas que podem Acessar a Arena --------------------------
+set .@rf, 25;
+//--- Site SeuRO ------------------------------------------------------------------
+set .site$, "^cc0000www.seuro.com.br/vip^000000";
+//---------------------------------------------------------------------------------
+
+mes .n$;
+mes "Olá "+strcharinfo(0)+", eu sou a guardiã da Arena dos Chefes o que deseja?";
+next;
+switch(select(""+.p$+" Entrar na Arena ^cc0000("+getmapusers("bossnia_02")+"/"+.@rf+")^000000:"+.p$+" Informações:"+.p$+" Cancelar")){
+
+	case 1:
+			warp .mp$,.@x,.@y;
+			close2;
+		
+	case 2:
+		mes .n$;
+		mes "A Arena dos Chefes é aberta todos os Dias.";
+		mes "Nela é permitido caçar todos os tipos de mvps que nascem";
+		mes "O drop das cartas atualmente é de 0.5%.";
+		next;
+		mes .n$;
+		mes "Qualquer dúvida fale comigo novamente, estarei sempre aqui !";
+		close;
+	
+	case 3:
+		mes .n$;
+		mes "Certo, volte quando precisar de meus serviços.";
+		close;
+	}
+
+OnInit:
+	waitingroom "Arena dos Chefes",0;
+	end;
+
+}
+//--- Mvps -----------------------------------------------------------------------
+//--- Os script abaixo ta na seguinte sequencia : --------------------------------
+//--- mapa,x,y<TAB>monster<TAB>nome do monstro<TAB>id do monstro,quantidade, -----
+//--- tempo fixo,tempo variado ---------------------------------------------------
+bossnia_01,0,0	monster	Garm	1252,5,7200000
+bossnia_01,0,0	monster	Gloom Under Night	1768,5,7200000
+bossnia_01,0,0	monster	Dark Lord	1272,5,7200000
+bossnia_01,0,0	monster	Doppelganger	1046,10,7200000
+bossnia_01,0,0	monster	Dracula	1389,5,1800000
+bossnia_01,0,0	monster	Drake	1112,10,1800000
+bossnia_01,0,0	monster	Detale	1719,3,7200000
+bossnia_01,0,0	monster	Maya	1147,10,1800000
+bossnia_01,0,0	monster	Mistress	1059,5,1800000
+bossnia_01,0,0	monster	Baphomet	1039,10,1800000
+bossnia_01,0,0	monster	Egnigem Cenia	1658,10,1800000
+bossnia_01,0,0	monster	Amon Ra	1511,5,1800000
+bossnia_01,0,0	monster	Atroce	1785,10,1800000
+bossnia_01,0,0	monster	Vesper	1685,3,7200000
+bossnia_01,0,0	monster	Eddga	1115,5,1800000
+bossnia_01,0,0	monster	Osiris	1038,10,7200000
+bossnia_01,0,0	monster	Orc Lord	1190,10,7200000
+bossnia_01,0,0	monster	Orc Hero	1087,10,3600000
+bossnia_01,0,0	monster	Samurai Specter	1492,3,7200000
+bossnia_01,0,0	monster	Moonlight Flower	1150,5,3600000
+bossnia_01,0,0	monster	Lord of the Dead	1373,5,3600000
+bossnia_01,0,0	monster	Ktullanux	1779,3,7200000
+bossnia_01,0,0	monster	Kiel D-01	1734,2,7200000
+bossnia_01,0,0	monster	Thanatos Phantom	1708,2,7200000
+bossnia_01,0,0	monster	Lady Tanee	1688,3,3600000
+bossnia_01,0,0	monster	Tao Gunka	1583,2,10800000
+bossnia_01,0,0	monster	Turtle General	1312,5,10800000
+bossnia_01,0,0	monster	Pharaoh	1157,5,3600000
+bossnia_01,0,0	monster	Stormy Knight	1251,2,7200000
+bossnia_01,0,0	monster	Falling Bishop	1871,3,7200000
+bossnia_01,0,0	monster	Phreeoni	1159,10,7200000
+bossnia_01,0,0	monster	Golden Thief Bug	1086,1,3600000
+bossnia_01,0,0	monster	Evil Snake Lord	1418,3,7200000
+bossnia_01,0,0	monster	RSX-0806	1623,5,7200000
+bossnia_01,0,0	monster	Assassin Cross Eremes	1647,1
+bossnia_01,0,0	monster	Whitesmith Howard	1648,1
+bossnia_01,0,0	monster	Beelzebub	1873,1
+bossnia_01,0,0	monster	Beelzebub	1873,1
+bossnia_01,0,0	monster	Valkyrie Randgris	1751,1
+bossnia_01,0,0	monster	Ifrit	1832,1
+bossnia_01,0,0	monster	General Daehyun	2253,1,3600000
+bossnia_01,0,0	monster	Guardião Morto Kades	2255,1,3600000
+bossnia_01,0,0	monster	Angeling	2934,5,3600000
+bossnia_01,0,0	monster	Deviling	2933,2,3600000
+bossnia_01,0,0	monster	Clone	3240,1,6600000
+bossnia_01,0,0	monster	Clone	3241,1,6600000
+bossnia_01,0,0	monster	Clone	3242,1,6600000
+bossnia_01,0,0	monster	Clone	3243,1,6600000
+bossnia_01,0,0	monster	Clone	3244,1,6600000
+bossnia_01,0,0	monster	Clone	3244,1,6600000
+bossnia_01,0,0	monster	Clone	3220,1,6600000
+bossnia_01,0,0	monster	Clone	3221,1,6600000
+bossnia_01,0,0	monster	Clone	3222,1,6600000
+bossnia_01,0,0	monster	Clone	3223,1,6600000
+bossnia_01,0,0	monster	Clone	3224,1,6600000
+bossnia_01,0,0	monster	Clone	3225,1,6600000
+bossnia_01,0,0	monster	Time Holder	3074,1,3600000
+bossnia_01,0,0	monster	Biruleibe	2441,1,72000000
+
+//--- Mapflags -------------------------------------------------------------------
+bossnia_02	mapflag	pvp_nightmaredrop	off
+bossnia_02	mapflag	pvp	off
+bossnia_02	mapflag	nopenalty
+bossnia_02	mapflag	nowarp
+bossnia_02	mapflag	nomemo
+bossnia_02	mapflag	noteleport
+bossnia_02	mapflag	nowarpto	
+bossnia_02	mapflag	nosave	SavePoint
+bossnia_02	mapflag	noreturn
+bossnia_02	mapflag	nobranch

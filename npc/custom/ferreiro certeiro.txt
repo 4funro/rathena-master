@@ -1,0 +1,152 @@
+//  _________________________________________________________
+// /                                                         \
+// |      ___           ___           ___           ___      |
+// |     /__/\         /  /\         /  /\         /__/|     |
+// |    |  |::\       /  /::\       /  /::\       |  |:|     |
+// |    |  |:|:\     /  /:/\:\     /  /:/\:\      |  |:|     |
+// |  __|__|:|\:\   /  /:/~/::\   /  /:/~/:/    __|  |:|     |
+// | /__/::::| \:\ /__/:/ /:/\:\ /__/:/ /:/___ /__/\_|:|____ |
+// | \  \:\~~\__\/ \  \:\/:/__\/ \  \:\/:::::/ \  \:\/:::::/ |
+// |  \  \:\        \  \::/       \  \::/~~~~   \  \::/~~~~  |
+// |   \  \:\        \  \:\        \  \:\        \  \:\      |
+// |    \  \:\        \  \:\        \  \:\        \  \:\     |
+// |     \__\/         \__\/         \__\/         \__\/     |
+// |---------------------------------------------------------|
+// | Nome do Script: Ferreiro Certeiro                       |
+// |---------------------------------------------------------|
+// | Criado por: Mark [kenshin_rh@hotmail.com]               |
+// |---------------------------------------------------------|
+// | Versões: 1.0         Roda com: brA/eA/Cronus            |
+// |---------------------------------------------------------|
+// | Descrição:                                              |
+// |  - Refina equipamentos +7 até +9 com Oridecon/Elunium   |
+// |  	Perfeitos e +10 até +19 com Bradium/Carnium Perfeitos|
+// |  - Ao falhar não se perde o item porém é diminuído      |
+// |    1 nível de refinamento.                              |
+// |---------------------------------------------------------|
+// | Changelog:               	                             |
+// | 1.0 Script Criado [Mark]                                |
+// \_________________________________________________________/
+
+prontera,167,190,3	script	Ferreiro Certeiro	826,{
+
+	function	nItem	{
+		if(getequiprefinerycnt(getarg(0)) < 10)
+		{
+			if(getequipweaponlv(getarg(0)) == 0)
+				return 6241;
+			else
+				return 6240;
+		} else {
+			if(getequipweaponlv(getarg(0)) == 0)
+				return 6225;
+			else
+				return 6226;
+		}
+	}
+	function	nRate	{
+		function	aRate
+		{
+			return getarg(getarg(0)+1);
+		}
+		switch(getequipweaponlv(getarg(0)))
+		{
+			case 0:
+				return aRate(getarg(1),
+				100,100,100,100,60,
+				40,40,20,20,10,
+				50,30,20,10,10,
+				10,10,10,10,10);
+				
+			case 1:
+				return aRate(getarg(1),
+				100,100,100,100,100,
+				100,100,60,40,20,
+				70,70,50,50,30,
+				30,20,20,10,10);
+				
+			case 2:
+				return aRate(getarg(1),
+				100,100,100,100,100,
+				100,60,40,20,20,
+				70,50,50,30,30,
+				20,20,10,10,10);
+				
+			case 3:
+				return aRate(getarg(1),
+				100,100,100,100,100,
+				60,50,20,20,20,
+				50,50,30,30,20,
+				20,10,10,10,10);
+				
+			case 4:
+				return aRate(getarg(1),
+				100,100,100,100,60,
+				40,40,20,20,10,
+				50,30,30,20,20,
+				10,10,10,10,10);
+		}
+	}
+
+	mes "[Ferreiro Certeiro]";
+	mes "Diferente dos outros ferreiros, eu só lido com itens especiais.";
+	mes "Se seu item estiver refinado em níveis de ^FF00007 ATÉ 19^000000, posso refiná-lo ainda mais para você.";
+	next;
+	mes "[Ferreiro Certeiro]";
+	mes "Mesmo falhando ^FF0000você não perderá o item. Ele apenas perderá 1 nível de refinamento.^000000 Não é o máximo?";
+	next;
+	mes "[Ferreiro Certeiro]";
+	mes "Bem, vamos começar. Qual o item que deseja refinar?";
+	next;
+	setarray .@pos$[1],"Cabeça (cima)","Armadura","Escudo","Arma","Capa","Sapato","Acessório 1","Acessório 2","Cabeça (meio)","Cabeça (baixo)";
+	for(set .@i,1; .@i < getarraysize(.@pos$); set .@i,.@i+1)
+	{
+		set .@equip$,getequipname(.@i);
+		if(.@i == 1)
+			set .@menu$,(.@equip$ != "-1"?getequipname(.@i):.@pos$[.@i]+" [Vazio]");
+		else
+			set .@menu$,.@menu$+":"+(.@equip$ != "-1"?getequipname(.@i):.@pos$[.@i]+" [Vazio]");
+	}
+	set .@type,select(.@menu$);
+	if(!getequipisenableref(.@type))
+	{
+		mes "[Ferreiro Certeiro]";
+		mes "Este item não pode ser refinado.";
+		close;
+	}
+	if(getequiprefinerycnt(.@type) == 20)
+	{
+		mes "[Ferreiro Certeiro]";
+		mes "Não é possível refinar um item acima de 20.";
+		close;
+	}
+	if(getequiprefinerycnt(.@type) < 7)
+	{
+		mes "[Ferreiro Certeiro]";
+		mes "Como já falei, trabalho apenas com itens refinado de +7 ATÉ +19.";
+		close;
+	}
+	set .@item,nItem(.@type);
+	mes "[Ferreiro Certeiro]";
+	mes "Para refinar este "+getequipname(.@type)+" você precisará me trazer";
+	mes "^FF00001x "+getitemname(.@item)+"^000000";
+	mes "Você deseja refinar seu item agora?";
+	next;
+	if(select("Não:Sim") == 1) close;
+	if(!countitem(.@item))
+	{
+		mes "[Ferreiro Certeiro]";
+		mes "Você precisa de ^FF00001x "+getitemname(.@item)+"^000000";
+		close;
+	} else {
+		set .@rate,nRate(.@type,getequiprefinerycnt(.@type));
+		delitem .@item,1;
+		if(.@rate<rand(1,100))
+		{
+			getitem2 getequipid(.@type),1,1,(getequiprefinerycnt(.@type)-1),0,getequipcardid(.@type,0),getequipcardid(.@type,1),getequipcardid(.@type,2),getequipcardid(.@type,3);
+			failedrefitem .@type;
+		}else
+			successrefitem .@type;
+		close;
+	}
+}

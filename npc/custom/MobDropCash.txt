@@ -1,0 +1,70 @@
+-	script	NPC MINIBOSS#COMANDOSRO	-1,{
+OnNPCKillEvent:
+switch( killedrid ) {
+case 1872:
+case 1873:
+case 1874:
+case 3074:
+case 2441:
+case 1871:
+case 1891:
+case 2255:
+case 1832:
+
+set @chances,rand(1,1);
+if(@chances == 1) atcommand "@cash 20";
+break;
+}
+end;
+}
+
+-	script	NPC MVP#COMANDOSRO	-1,{
+OnNPCKillEvent:
+switch( killedrid ) {
+case 1583:
+case 1511:
+case 1647:
+case 1785:
+case 1630:
+case 1039:
+case 1272:
+case 1719:
+case 1046:
+case 1389:
+case 1112:
+case 1115:
+case 1658:
+case 1418:
+case 1252:
+case 1768:
+case 1649:
+case 1651:
+case 1832:
+case 1492:
+case 1734:
+case 1251:
+case 1373:
+case 1147:
+case 1688:
+case 1059:
+case 1150:
+case 1087:
+case 1190:
+case 1038:
+case 1157:
+case 1159:
+case 1623:
+case 1650:
+case 1312:
+case 1751:
+case 1685:
+case 1648:
+case 1885:
+
+set @chances,rand(1,1);
+if(@chances == 1) atcommand "@cash 10";
+break;
+}
+end;
+}
+

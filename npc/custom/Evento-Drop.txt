@@ -1,0 +1,81 @@
+prontera,143,170,4	script	Evento-Drop#by_Oliver	902,{
+
+	if(getgmlevel() < 80){ 
+				dispbottom "Você não tem acesso ao NPC!"; 
+				dispbottom "Aguarde até que um ADM/GM ligue o evento."; end; }
+
+		mes "[ ^0000FFEvento-Drop^000000 ]";
+		mes "Olá Sr.(a) GM/ADM.";
+		mes "O que gostaria de fazer?";
+		if(select("- Começar o Evento-Drop:- Desligar o Evento-Drop:- Evento-Drop?:- Nada")==4)close;
+		
+		if(@menu == 2) {
+		next;
+
+		if($dropevent != 1) {
+		mes "[ ^0000FFEvento-Drop^000000 ]";
+		mes "O Evento já está desligado.";
+		close;
+		}
+
+		mes "[ ^0000FFEvento-Drop^000000 ]";
+		mes "Muito bem, deseja desligar o Evento-Drop?";
+		if(select("- Sim:- Não")==2)close;
+		next;
+		mes "[ ^0000FFEvento-Drop^000000 ]";
+		mes "Evento desligado.";
+		set $dropevent,0;
+		announce "[Evento-Drop] O Evento Drop foi desligado!",bc_all;
+		close;
+		}	
+		
+		
+		if(@menu == 3) {
+		next;
+		mes "[ ^0000FFEvento-Drop^000000 ]";
+		mes "Trata-se de um sistema em que você me informa um ID de um item";
+		mes "e eu faço com que todos os monstros do servidor dropem ele.";
+		next;
+		mes "[ ^0000FFEvento-Drop^000000 ]";
+		mes "Após você desligar o evento, todos os monstros voltarão ao seu drop original.";
+		close;
+		}
+
+		if($dropevent == 1) {
+		next;
+		mes "[ ^0000FFEvento-Drop^000000 ]";
+		mes "O Evento já está ligado.";
+		close;
+		}
+
+		changeinfo:
+		next;
+		mes "[ ^0000FFEvento-Drop^000000 ]";
+		mes "Muito bem, preciso que você me informe o ID do item que será dropado.";
+		input $idd;
+		next;
+		mes "[ ^0000FFEvento-Drop^000000 ]";
+		mes "Agora preciso que você me informe a quantidade de itens que será dropado.";
+		input $quantdrop;
+		next;
+		mes "[ ^0000FFEvento-Drop^000000 ]";
+		mes "Muito bem, vamos ver se estou correto.";
+		mes "Você quer que todos os monstros do servidor dropem";
+		mes " ^0000FF"+$quantdrop+"^000000 ^0000FF"+getitemname($idd)+"^000000?";
+		mes "Está correto?";
+		if(select("- Sim:- Mudar informações:- Deixar de realizar evento")==3)close;
+		if(@menu == 2) goto changeinfo;
+		set $dropevent,1;
+		announce "[Evento-Drop] Evento Drop! Todos os monstros do servidor estão dropando "+$quantdrop+" "+getitemname($idd)+" !",bc_all;
+		close;
+	}
+		
+
+
+-	script	SystemDrop#by_Oliver	-1,{
+
+OnNPCKillEvent:
+if($dropevent==1) getitem $idd,$quantdrop;
+end;
+
+}

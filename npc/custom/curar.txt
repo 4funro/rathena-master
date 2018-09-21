@@ -1,0 +1,64 @@
+prontera,160,189,5	script	Curandeira#hG1-1::HealerG	91,{
+//======= Config 
+
+set .ZenyN, 0; // Zeny Cobrado
+if( Zeny < .ZenyN ) {
+mes "[Curandeira]";
+mes "Oh, você não tem todo o dinheiro necessário.";
+mes "Desculpe, mas não posso curá-lo.";
+close;	
+}
+percentheal 100,100;
+// ---- Para Player Normal ----
+if( getgmlevel() < 1 ) {
+atcommand "@REPAIRALL";
+specialeffect2 12; 
+sc_end SC_ALL;
+sc_start SC_BLESSING,360000,10;
+sc_start SC_INCREASEAGI,360000,10;
+sc_start SC_GLORIA,360000,5;
+sc_start SC_MAGNIFICAT,360000,5;
+percentheal 100,100;
+
+set Zeny, Zeny-.ZenyN;
+}
+else {
+// ---- Para Vip ----
+emotion 51; 
+specialeffect2 12;
+sc_end SC_ALL;
+sc_start SC_INCMHPRATE,360000,10;
+sc_start 21, 300000, 10; 
+sc_start 32, 300000, 10; 
+sc_start 29, 300000, 10; 
+sc_start 30, 300000, 10; 
+sc_start 35, 300000, 5; 
+sc_start 39, 300000, 10; 
+sc_start 40, 300000, 5; 
+sc_start 41, 300000, 5; 
+sc_start SC_STRFood,360000,20;
+sc_start SC_AGIFood,360000,20;
+sc_start SC_VITFood,360000,20;
+sc_start SC_INTFood,360000,20;
+sc_start SC_DEXFood,360000,20;
+sc_start SC_LUKFood,360000,20;
+sc_start SC_HitFood,1200000,30;
+sc_start SC_FleeFood,1200000,30;
+sc_start SC_BATKFood,1200000,30;
+sc_start SC_MATKFood,120000,30;
+sc_start SC_ASPDPOTION2,360000,0;
+sc_start SC_SUFFRAGIUM,360000,3;
+sc_start SC_KYRIE,360000,0;
+sc_start SC_INCATKRATE,360000,5;
+sc_start SC_INCMATKRATE,360000,5;
+sc_start SC_ITEMBOOST,360000,200;
+sc_start SC_SECRAMENT,360000,5;
+percentheal 100,100;
+
+
+
+dispbottom "Obrigado por jogar no 4funRO , "+strcharinfo(0)+" #";
+set Zeny, Zeny-.ZenyN;
+}
+end;
+}

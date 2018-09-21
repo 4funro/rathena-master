@@ -1,0 +1,123 @@
+//====Changelog:
+//====Script criador por Pixel 
+//====Adicionado comandos adicionais por Duka
+//====Adicionado tabela SQL na tabela guild por Duka
+//====Adicionado npc Saída e Entrada por Duka
+//====Adicionado barricadas , Rank por Duka
+//==================TREASURE WAR============================
+
+prontera,0,0,0	script	War of Treasure	-1,{
+
+
+OnClock0950:
+OnClock1350: 
+OnClock1550:
+OnClock1750:
+OnClock1950:
+OnClock2150:
+OnClock2350:
+initnpctimer;
+announce "[Guerra do Tesouro] Os Báus surgirão em 10 minutos !",bc_all,0xADD8E6;
+set .morto,0;
+setcell "arena",140,140,160,160,cell_walkable,1;
+setcell "arena",140,140,160,160,cell_walkable,1;
+
+end;
+
+OnTimer15000:
+announce "[Guerra do Tesouro] Portal para salas dos Baús ao Norte de Prontera ! Corra",bc_all,0xADD8E6;
+end;
+
+OnTimer300000:
+announce "[Guerra do Tesouro] Apressem-se os Báus aparecerão em 5 minutos !",bc_all,0xADD8E6;
+disablenpc "exit";
+end;
+
+OnTimer540000:
+announce "[Guerra do Tesouro] Em 1 minutos os Báus do Tesouro surgirão , apressem-se !",bc_all,0xADD8E6;
+stopnpctimer;
+end;
+
+OnClock1000:
+OnClock1400:
+OnClock1600:
+OnClock1800:
+OnClock2000:
+OnClock2200:
+OnClock0000:
+set .@bau,1324;  //id Bau da Wot
+announce "[Guerra do Tesouro] Os Báus do tesouro apareceram !",bc_all,0xADD8E6;
+monster "prt_are_in",178,140,"Bau do Tesouro",.@bau,1,"War of Treasure::OnThisMobDeath"; 
+monster "prt_are_in",22,89,"Bau do Tesouro",.@bau,1,"War of Treasure::OnThisMobDeath";
+end;
+
+
+OnThisMobDeath:
+set .morto,.morto+1;
+announce "[Guerra do Tesouro] O Jogador "+strcharinfo(0)+" do clã "+strcharinfo(2)+" acaba de destruir um dos Baús!",bc_all,0xADD8E6;
+Query_sql "UPDATE `guild` SET `pontos`=`pontos`+1 WHERE `guild_id`='"+getcharid(2)+"'";
+if (.morto == 2) {
+enablenpc "exit#tw";
+}
+end;
+}
+
+
+
+//Muros
+prt_are_in,105,21,3,3	monster	Muro	1905,1,30,60,"War of Treasure::OnInit";
+prt_are_in,92,23,5,5	monster	Muro	1905,1,30,60,"War of Treasure::OnInit";
+prt_are_in,87,12,2,2	monster	Muro	1905,1,30,60,"War of Treasure::OnInit";
+prt_are_in,107,12,4,4	monster	Muro	1905,1,30,60,"War of Treasure::OnInit";
+prt_are_in,100,16,6,6	monster	Muro	1905,1,30,60,"War of Treasure::OnInit";
+prt_are_in,97,19,3,3	monster	Muro	1905,1,30,60,"War of Treasure::OnInit";
+
+
+//Portais
+//izlude,128,225,0	warp	War Of Treasure1	1,1,arena_room,100,25
+prt_are_in,55,13,0	warp	War Of Treasure#1	1,1,prt_are_in,177,129
+prt_are_in,177,127,0	warp	War Of Treasure#2	1,1,prt_are_in,57,13
+prt_are_in,21,75,0	warp	War Of Treasure#3	1,1,prt_are_in,140,13
+prt_are_in,142,13,0	warp	War Of Treasure#4	1,1,prt_are_in,21,77
+arena_room,76,87	warp	WarOfTreasure#5	1,1,prt_are_in,97,30
+
+
+izlude,128,225,1	script	entrada	45,2,2,{ 
+OnTouch:
+if (getcharid(2) > 0 ) {
+warp "arena_room",100,25;
+end;
+}
+else {
+mes "^FF0000 Você precisa estar em um Clã para participar desse evento. ^000000";
+close; }
+end;
+}
+
+prt_are_in,97,6,1	script	exit#tw	45,2,2,{
+OnTouch:
+warp "izlude",128,113;
+end;
+}
+
+arena_room	mapflag	gvg
+arena_room	mapflag	nowarp
+arena_room	mapflag	nowarpto
+arena_room	mapflag	noreturn
+prt_are_in	mapflag	gvg
+prt_are_in	mapflag	nowarp
+prt_are_in	mapflag	nowarpto
+prt_are_in	mapflag	noreturn
+
+
+izlude,132,220,4	script	Guerra do Tesouro	857,{
+
+mes "^3366FF[Rank Guerra do Tesouro]^000000";
+mes "^999999Posição^000000  : ^339966Guild ^000000: ^000080Pontos^000000";
+for(set .@i,0; .@i < 10; set .@i,.@i+1){
+query_sql "select `name`,`pontos` from `guild` where `pontos` > 0 ORDER BY `pontos` DESC LIMIT 20",.@n$,.@p;
+mes "^999999"+(.@i+1)+"^000000 : ^339966"+.@n$[.@i]+"^000000 : ^000080"+.@p[.@i]+"^000000";
+if(.@p == 0) break;
+}
+close;
+}

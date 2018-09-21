@@ -1,0 +1,136 @@
+-	shop	PTSHOP1	-1,512:-1
+-	shop	PTSHOP2	-1,512:-1
+prontera,168,161,3	script	Loja de Emblemas	562,{
+
+set .npc$,"^00ff00[ Emblemas Por Pontos ]^000000";
+
+
+mes .npc$;
+mes "Ola "+strcharinfo(0)+" tudo bem ?";
+mes "Eu posso trocar seus emblemas por ^00ff00Pontos^000000 , para voce adquirir itens.";
+mes "O que deseja fazer?";
+switch(select("^0084ff[ BG ]^000000 Trocar Emblemas:^0084ff[ BG ]^000000 Abrir Loja")){
+
+case 1:
+next;
+mes .npc$;
+mes "Qual Emblema voce deseja trocar?";
+switch(select("^0084ff[ BG ]^000000Emblema de Guerra:^0084ff[ BG ]^000000 Emblema da Bravura:^0084ff[ BG ]^000000 Emblema de Valor")){
+
+case 1:
+set.@emb , 7773;
+set.@preco , 2;
+goto proximo;
+
+case 2:
+set.@emb , 7828;
+set.@preco , 1;
+goto proximo;
+
+case 3:
+set.@emb , 7829;
+set.@preco , 1;
+goto proximo;
+
+}
+
+proximo:
+next;
+mes .npc$;
+mes "Irei pagar "+.@preco+" por cada emblema seu.";
+mes "Digite o numero de emblemas que voce deseja me vender...";
+
+input @nemblema;
+
+if(countitem(.@emb) < @nemblema)goto no_item;
+
+set @total , @nemblema*.@preco;
+
+
+next;
+mes .npc$;
+mes "Prontinho "+strcharinfo(0)+", eu adicionei  "+@total+" pontos para voce";
+
+set totalpontos , totalpontos+@total;
+
+delitem .@emb,@nemblema;
+
+close;
+
+
+close;
+
+case 2:
+next;
+mes .npc$;
+
+	mes "^FF0000Escolha a categoria de itens que lhe interessa:^000000";
+	set @s, select("Loja Universe-Ro");
+	message strcharinfo(0),"Esta loja só aceita Pontos por Emblemas.";
+	dispbottom "Você tem "+totalpontos+" Emblemas.";
+	callshop "PTSHOP"+@s,1;
+	npcshopattach "PTSHOP"+@s;
+	end;
+close;
+OnBuyItem:
+mes .npc$;
+if (totalpontos==0){mes "Você não possui Pontos de Emblemas"; close;}
+if (totalpontos>=1){
+	set .@i,0;
+	while (.@i < getarraysize(@bought_nameid)) {
+		set .@j, 0;
+		while (.@j < getarraysize(getd(".Shop"+@s))) {
+			if(getd(".Shop"+@s+"["+.@j+"]") == @bought_nameid[.@i]) {
+				set @itemcost, (getd(".Shop"+@s+"["+(.@j+1)+"]") * @bought_quantity[.@i]);
+				set @totalcost, @totalcost + @itemcost;
+				break; }
+			set .@j, .@j+2; }
+		set .@i, .@i+1; }
+	if (@totalcost > totalpontos) dispbottom "Você não tem o suficiente de Pontos de Emblemas."; 
+	else {
+		set .@i,0;
+		while (.@i < getarraysize(@bought_nameid)) {
+			getitem @bought_nameid[.@i], @bought_quantity[.@i];
+			
+			dispbottom "Você comprou "+@bought_quantity[.@i]+"x "+getitemname(@bought_nameid[.@i])+".";
+
+			set .@i, .@i+1; }
+		set totalpontos , totalpontos-@totalcost;
+		mes "Seu total de Pontos de Emblema agora é "+totalpontos+" .";}
+	set @totalcost, 0;
+	deletearray @bought_nameid[0], 128;
+	deletearray @bought_quantity[0], 128;
+close;
+	end;
+}
+
+case 3:
+next;
+mes .npc$;
+mes "ate aqui esta tudo  certo";
+close;
+
+no_item:
+next;
+mes .npc$;
+mes ""+strcharinfo(0)+" voce nao possui este numero de emblemas, confira seu inventario.";
+close;
+
+
+
+}
+OnInit:
+	setarray .Currency[1],507;
+	setarray .Shop1[0],5801,18000,5137,16000,5325,15000,5225,15000,5490,14000,5564,12000,5293,12000,5420,12000,5211,11000,5497,10000,5406,10000,5407,5396,10000,10000,5506,9000,5507,9000,5170,9000,5379,9500,5389,5000,5288,5000,5402,6000,5471,5700,5539,5600,5445,5000,5574,5000;
+	setarray .Shop2[0],5022,1000,5497,500,5507,300,5506,300,5491,500,5094,700;
+
+	set .@i,1;
+	while (.@i <= getarraysize(.Currency)) {
+		set .@j,0;
+while (.@j < getarraysize(getd(".Shop"+.@i))) {
+			npcshopdelitem "PTSHOP"+.@i,512;
+			npcshopadditem "PTSHOP"+.@i, getd(".Shop"+.@i+"["+.@j+"]"), getd(".Shop"+.@i+"["+(.@j+1)+"]");
+			set .@j, .@j+2; }
+		set .@i, .@i+1; }
+	end;
+}
